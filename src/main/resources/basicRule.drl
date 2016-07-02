@@ -1,0 +1,53 @@
+//created on: 02/07/2016
+package edu.cibertec.drools
+
+//list any import classes here.
+
+
+
+//declare any global variables here
+import edu.cibertec.drools.bean.Account
+import edu.cibertec.drools.bean.Bonus
+
+
+dialect "mvel"
+
+rule "Your First Rule"
+no-loop 
+    when
+        //conditions
+        $account : Account($balance: balance, abonado == false , balance < 100)
+        $bonus : Bonus (type == "HELP")
+    then
+        //actions
+        System.out.println("Account id "+ $account.id
+        +"con balance menos que 100, balace:"+$account.balance)
+        modify ($account){
+			balance = $balance + $bonus.amount,		
+			abonado = true;
+		}	
+
+end
+
+
+
+rule "Balance_mayor_100"
+no-loop 	
+    when
+        //conditions
+        //se crea la variable $balance
+        $account : Account($balance: balance, abonado == false , balance > 100)
+        $bonus : Bonus (type == "GOAL")
+        
+    then
+        //actions
+        System.out.println("Account id "+ $account.id
+        +"con balance MAYOR que 100, balace:"+$account.balance)
+		modify ($account){
+			balance = $balance + $bonus.amount,			
+			abonado = true;
+		}		
+		
+end
+
+
